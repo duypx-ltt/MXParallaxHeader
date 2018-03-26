@@ -217,14 +217,23 @@ static void * const kMXParallaxHeaderKVOContext = (void*)&kMXParallaxHeaderKVOCo
     CGFloat relativeYOffset = self.scrollView.contentOffset.y + self.scrollView.contentInset.top - self.height;
     CGFloat relativeHeight  = -relativeYOffset;
     
-    CGRect frame = (CGRect){
-        .origin.x       = 0,
-        .origin.y       = relativeYOffset,
-        .size.width     = self.scrollView.frame.size.width,
-        .size.height    = MAX(relativeHeight, minimumHeight)
-    };
-    
-    self.contentView.frame = frame;
+    if (@available(iOS 11.0, *)) {
+        CGRect frame = (CGRect){
+            .origin.x       = 0,
+            .origin.y       = relativeYOffset,
+            .size.width     = self.scrollView.frame.size.width,
+            .size.height    = MAX(relativeHeight, minimumHeight)
+        };
+        self.contentView.frame = frame;
+    } else {
+        CGRect frame = (CGRect){
+            .origin.x       = 0,
+            .origin.y       = relativeYOffset + 64,
+            .size.width     = self.scrollView.frame.size.width,
+            .size.height    = MAX(relativeHeight, minimumHeight)
+        };
+        self.contentView.frame = frame;
+    }
     
     CGFloat div = self.height - self.minimumHeight;
     self.progress = (self.contentView.frame.size.height - self.minimumHeight) / (div? : self.height);
