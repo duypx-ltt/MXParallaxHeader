@@ -124,6 +124,10 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
         return NO;
     }
     
+    if ([scrollView isKindOfClass:[UITextView class]]) {
+        return NO;
+    }
+    
     BOOL shouldScroll = YES;
     if ([self.delegate respondsToSelector:@selector(scrollView:shouldScrollWithSubView:)]) {
         shouldScroll = [self.delegate scrollView:self shouldScrollWithSubView:scrollView];;
